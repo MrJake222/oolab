@@ -1,20 +1,26 @@
 package agh.ics.oop;
 
 public enum MapDirection {
-    NORTH("Północ"),
-    SOUTH("Południe"),
-    WEST("Zachód"),
-    EAST("Wschód");
+    NORTH("Północ", "^"),
+    SOUTH("Południe", "v"),
+    WEST("Zachód", "<"),
+    EAST("Wschód", ">");
 
     private final String description;
+    private final String symbol;
 
-    MapDirection(String description) {
+    MapDirection(String description, String symbol) {
         this.description = description;
+        this.symbol = symbol;
     }
 
     @Override
     public String toString() {
         return this.description;
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 
     public MapDirection next() {

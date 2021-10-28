@@ -1,6 +1,9 @@
 import agh.ics.oop.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalIntegrationTest {
@@ -53,5 +56,17 @@ public class AnimalIntegrationTest {
         assertTrue(animal.isAt(new Vector2d(0, 0))); // border
         OptionsParser.parse("lrf".split("")).forEach(animal::move);
         assertTrue(animal.isAt(new Vector2d(1, 0)));
+    }
+
+    @Test
+    public void mapTest() {
+        List<MoveDirection> moves = OptionsParser.parse("f b r l f f r r f f f f f f f f".split(" "));
+        IWorldMap map = new RectangularMap(10, 5);
+        List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
+        SimulationEngine engine = new SimulationEngine(map, positions, moves);
+        engine.run();
+
+        assertTrue(engine.getAnimalAt(0).isAt(new Vector2d(2, 0)));
+        assertTrue(engine.getAnimalAt(1).isAt(new Vector2d(3, 4)));
     }
 }

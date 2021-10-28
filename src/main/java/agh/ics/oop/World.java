@@ -14,9 +14,14 @@ public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
 
+//        List<MoveDirection> moves = OptionsParser.parse(args);
+//        Animal animal = new Animal();
+//        run(animal, moves);
         List<MoveDirection> moves = OptionsParser.parse(args);
-        Animal animal = new Animal();
-        run(animal, moves);
+        IWorldMap map = new RectangularMap(10, 5);
+        List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
+        IEngine engine = new SimulationEngine(map, positions, moves);
+        engine.run();
 
         System.out.println("system zakończył działanie");
     }
