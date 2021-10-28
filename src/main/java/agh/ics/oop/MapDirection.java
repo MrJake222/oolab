@@ -24,7 +24,7 @@ public enum MapDirection {
             case SOUTH: return WEST;
             case WEST: return NORTH;
         }
-        return null;
+        throw new AssertionError("No next case defined for "+this);
     }
 
     public MapDirection previous() {
@@ -34,7 +34,7 @@ public enum MapDirection {
             case SOUTH: return EAST;
             case EAST: return NORTH;
         }
-        return null;
+        throw new AssertionError("No previous case defined for "+this);
     }
 
     public Vector2d toUnitVector() {
@@ -44,6 +44,6 @@ public enum MapDirection {
             case SOUTH: return new Vector2d(0,-1);
             case WEST: return new Vector2d(-1,0);
         }
-        return null;
+        throw new AssertionError("No toUnitVector case defined for "+this);
     }
 }

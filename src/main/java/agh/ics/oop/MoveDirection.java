@@ -4,15 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum MoveDirection {
-    FORWARD("f", "Zwierzak idzie do przodu"),
-    BACKWARD("b", "Zwierzak idzie do tyłu"),
-    RIGHT("r", "Zwierzak skręca w prawo"),
-    LEFT("l", "Zwierzak skręca w lewo");
+    FORWARD("f", "forward", "Zwierzak idzie do przodu"),
+    BACKWARD("b", "backward", "Zwierzak idzie do tyłu"),
+    RIGHT("r", "right", "Zwierzak skręca w prawo"),
+    LEFT("l", "left", "Zwierzak skręca w lewo");
 
     public final String code;
+    public final String fullcode;
     public final String msg;
-    MoveDirection(String code, String msg) {
+    MoveDirection(String code, String fullcode, String msg) {
         this.code = code;
+        this.fullcode = fullcode;
         this.msg = msg;
     }
 
@@ -20,6 +22,7 @@ public enum MoveDirection {
     static {
         for (MoveDirection dir : MoveDirection.values()) {
             VALUE_MAP.put(dir.code, dir);
+            VALUE_MAP.put(dir.fullcode, dir);
         }
     }
 
