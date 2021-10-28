@@ -1,4 +1,9 @@
-package agh.ics.oop;
+package agh.ics.oop.engine;
+
+import agh.ics.oop.Vector2d;
+import agh.ics.oop.map.IWorldMap;
+import agh.ics.oop.map.element.Animal;
+import agh.ics.oop.map.element.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.List;

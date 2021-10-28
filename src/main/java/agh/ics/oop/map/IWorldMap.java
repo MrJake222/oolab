@@ -1,4 +1,8 @@
-package agh.ics.oop;
+package agh.ics.oop.map;
+
+import agh.ics.oop.Vector2d;
+import agh.ics.oop.map.element.Animal;
+import agh.ics.oop.map.element.IMapElement;
 
 /**
  * The interface responsible for interacting with the map of the world.
@@ -20,11 +24,11 @@ public interface IWorldMap {
     /**
      * Place an animal on the map.
      *
-     * @param animal
-     *            The animal to place on the map.
+     * @param element
+     *            Element to place on the map.
      * @return True if the animal was placed. The animal cannot be placed if the place is already occupied.
      */
-    boolean place(Animal animal);
+    boolean place(IMapElement element);
 
     /**
      * Return true if given position on the map is occupied. Should not be
@@ -44,5 +48,5 @@ public interface IWorldMap {
      *            The position of the object.
      * @return Object or null if the position is not occupied.
      */
-    Object objectAt(Vector2d position);
+    IMapElement objectAt(Vector2d position);
 }

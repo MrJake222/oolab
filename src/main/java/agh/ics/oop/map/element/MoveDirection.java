@@ -1,4 +1,4 @@
-package agh.ics.oop;
+package agh.ics.oop.map.element;
 
 import java.util.HashMap;
 import java.util.Map;

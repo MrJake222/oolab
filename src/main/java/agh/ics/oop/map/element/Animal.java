@@ -1,14 +1,16 @@
-package agh.ics.oop;
+package agh.ics.oop.map.element;
 
-public class Animal {
+import agh.ics.oop.*;
+import agh.ics.oop.map.IWorldMap;
+import agh.ics.oop.map.MapDirection;
+import agh.ics.oop.map.RectangularMap;
 
-    private IWorldMap map;
-    private Vector2d position;
+public class Animal extends AbstractMapElement {
+
     private MapDirection mapDirection;
 
     public Animal(IWorldMap map, Vector2d position) {
-        this.map = map;
-        this.position = position;
+        super(map, position);
         this.mapDirection = MapDirection.NORTH;
     }
 
@@ -18,20 +20,6 @@ public class Animal {
 
     public Animal() {
         this(new RectangularMap(5, 5));
-    }
-
-    @Override
-    public String toString() {
-        // return "{Zwięrzę na "+this.position+" kierunek "+this.mapDirection+"}";
-        return this.mapDirection.getSymbol();
-    }
-
-    public boolean isAt(Vector2d position) {
-        return this.position.equals(position);
-    }
-
-    public Vector2d getPosition() {
-        return position;
     }
 
     public MapDirection getDirection() {
@@ -62,5 +50,16 @@ public class Animal {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean canWalkOver() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        // return "{Zwięrzę na "+this.position+" kierunek "+this.mapDirection+"}";
+        return this.mapDirection.getSymbol();
     }
 }

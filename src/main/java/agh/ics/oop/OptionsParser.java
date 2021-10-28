@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import agh.ics.oop.map.element.MoveDirection;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

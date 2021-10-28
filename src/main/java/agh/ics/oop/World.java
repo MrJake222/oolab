@@ -1,8 +1,14 @@
 package agh.ics.oop;
 
+import agh.ics.oop.engine.IEngine;
+import agh.ics.oop.engine.SimulationEngine;
+import agh.ics.oop.map.IWorldMap;
+import agh.ics.oop.map.RectangularMap;
+import agh.ics.oop.map.element.Animal;
+import agh.ics.oop.map.element.MoveDirection;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class World {
 
