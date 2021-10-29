@@ -1,17 +1,20 @@
 package agh.ics.oop.map.element;
 
 import agh.ics.oop.*;
-import agh.ics.oop.map.IWorldMap;
-import agh.ics.oop.map.MapDirection;
-import agh.ics.oop.map.RectangularMap;
+import agh.ics.oop.map.*;
 
-public class Animal extends AbstractMapElement {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Animal extends AbstractMapElement implements IObservable {
 
     private MapDirection mapDirection;
+    protected List<IPositionChangeObserver> observers;
 
     public Animal(IWorldMap map, Vector2d position) {
         super(map, position);
         this.mapDirection = MapDirection.NORTH;
+        this.observers = new ArrayList<>();
     }
 
     public Animal(IWorldMap map) {
@@ -24,6 +27,14 @@ public class Animal extends AbstractMapElement {
 
     public MapDirection getDirection() {
         return mapDirection;
+    }
+
+    private void makeMoveTo(Vector2d newPosition) {
+        for (IPositionChangeObserver observer : observers) {
+            observer.positionChanged(this.position, newPosition);
+        }
+
+        this.position = newPosition;
     }
 
     public void move(MoveDirection direction) {
@@ -40,13 +51,13 @@ public class Animal extends AbstractMapElement {
 
             case FORWARD: {
                 Vector2d newPos = position.add(mapDirection.toUnitVector());
-                if (map.canMoveTo(newPos)) position = newPos;
+                if (map.canMoveTo(newPos)) makeMoveTo(newPos);
                 break;
             }
 
             case BACKWARD: {
                 Vector2d newPos = position.add(mapDirection.toUnitVector().opposite());
-                if (map.canMoveTo(newPos)) position = newPos;
+                if (map.canMoveTo(newPos)) makeMoveTo(newPos);
                 break;
             }
         }
@@ -61,5 +72,15 @@ public class Animal extends AbstractMapElement {
     public String toString() {
         // return "{Zwięrzę na "+this.position+" kierunek "+this.mapDirection+"}";
         return this.mapDirection.getSymbol();
+    }
+
+    @Override
+    public void addObserver(IPositionChangeObserver observer) {
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(IPositionChangeObserver observer) {
+        this.observers.remove(observer);
     }
 }

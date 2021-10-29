@@ -4,15 +4,16 @@ import agh.ics.oop.Vector2d;
 import agh.ics.oop.map.element.IMapElement;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap {
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     protected int width;
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    private final List<IMapElement> mapElements;
+    private final Map<Vector2d, IMapElement> mapElements;
     private final MapVisualizer visualizer;
 
     public AbstractWorldMap(int width, int height) {
@@ -20,7 +21,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
         this.height = height;
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(this.width-1, this.height-1);
-        this.mapElements = new ArrayList<>();
+        this.mapElements = new LinkedHashMap<>();
         this.visualizer = new MapVisualizer(this);
     }
 
@@ -46,7 +47,11 @@ public abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean place(IMapElement element) {
         if (!isOccupied(element.getPosition())) {
-            mapElements.add(element);
+            if (element instanceof IObservable) {
+                ((IObservable) element).addObserver(this);
+            }
+            
+            mapElements.put(element.getPosition(), element);
             return true;
         }
 
@@ -55,24 +60,19 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        for (IMapElement element : mapElements) {
-            if (element.isAt(position)) {
-                return true;
-            }
-        }
-
-        return false;
+        return objectAt(position) != null;
     }
 
     @Override
     public IMapElement objectAt(Vector2d position) {
-        for (IMapElement element : mapElements) {
-            if (element.isAt(position)) {
-                return element;
-            }
-        }
+        return mapElements.get(position);
+    }
 
-        return null;
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        IMapElement element = objectAt(oldPosition);
+        mapElements.remove(oldPosition);
+        mapElements.put(newPosition, element);
     }
 
     @Override
