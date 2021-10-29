@@ -23,6 +23,13 @@ public class Vector2d {
         return this.x == other.x && this.y == other.y;
     }
 
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
+
     public Vector2d opposite() {
         return new Vector2d(-this.x, -this.y);
     }

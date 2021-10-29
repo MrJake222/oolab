@@ -14,6 +14,22 @@ public class Vector2dTest {
     }
 
     @Test
+    public void hashcodeTest() {
+        Vector2d[] vectors = {
+                new Vector2d(1,2),
+                new Vector2d(1,2),
+                new Vector2d(2,1),
+                new Vector2d(3,4),
+                new Vector2d(3,4)};
+
+        for (Vector2d v1 : vectors) {
+            for (Vector2d v2 : vectors) {
+                assertEquals(v1.equals(v2), v1.hashCode() == v2.hashCode());
+            }
+        }
+    }
+
+    @Test
     public void toStringTest() {
         assertEquals("(1,2)", new Vector2d(1,2).toString());
         assertEquals("(-3,-4)", new Vector2d(-3,-4).toString());
