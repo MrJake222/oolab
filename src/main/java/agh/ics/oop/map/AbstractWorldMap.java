@@ -46,16 +46,16 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public boolean place(IMapElement element) {
-        if (!isOccupied(element.getPosition())) {
-            if (element instanceof IObservable) {
-                ((IObservable) element).addObserver(this);
-            }
-            
-            mapElements.put(element.getPosition(), element);
-            return true;
+        if (isOccupied(element.getPosition())) {
+            throw new IllegalArgumentException("unable to place " + element + " on " + element.getPosition());
         }
 
-        return false;
+        if (element instanceof IObservable) {
+            ((IObservable) element).addObserver(this);
+        }
+
+        mapElements.put(element.getPosition(), element);
+        return true;
     }
 
     @Override

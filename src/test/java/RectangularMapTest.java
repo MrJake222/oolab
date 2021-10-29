@@ -24,13 +24,13 @@ public class RectangularMapTest {
         assertTrue(map.place(new Grass(map, new Vector2d(0, 0))));
         assertTrue(map.place(new Animal(map, new Vector2d(1, 1))));
         assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
-        assertFalse(map.place(new Animal(map, new Vector2d(5, 5))));
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(5, 5)))); // place outside
 
         assertTrue(map.canMoveTo(new Vector2d(0, 0))); // grass
         assertFalse(map.canMoveTo(new Vector2d(1, 1))); // animal
         assertFalse(map.canMoveTo(new Vector2d(-10, -4))); // outside
-        assertFalse(map.place(new Animal(map, new Vector2d(4, 4)))); // place on animal
-        assertFalse(map.place(new Grass(map, new Vector2d(0,0)))); // place on grass
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4)))); // place on animal
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Grass(map, new Vector2d(0,0)))); // place on grass
 
         assertEquals(map.objectAt(new Vector2d(2, 3)), map.objectAt(new Vector2d(2, 3)));
         assertEquals(map.objectAt(new Vector2d(0, 1)), map.objectAt(new Vector2d(0, 1)));

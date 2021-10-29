@@ -63,4 +63,12 @@ public class AnimalIntegrationTest {
         OptionsParser.parse("lrf".split("")).forEach(animal::move);
         assertTrue(animal.isAt(new Vector2d(1, 0)));
     }
+
+    @Test
+    public void parserThrowsTest() {
+        // Invalid move
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse("lrfg".split("")));
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse("a".split("")));
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse("h".split("")));
+    }
 }

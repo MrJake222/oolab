@@ -34,4 +34,12 @@ public class GrassField extends AbstractWorldMap {
 
         return false;
     }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        upperRight = upperRight.upperRight(newPosition);
+        lowerLeft = lowerLeft.lowerLeft(newPosition);
+
+        super.positionChanged(oldPosition, newPosition);
+    }
 }

@@ -28,6 +28,6 @@ public class RectangularMap extends AbstractWorldMap {
             return super.place(element);
         }
 
-        return false;
+        throw new IllegalArgumentException("unable to place "+element+" outside of map");
     }
 }

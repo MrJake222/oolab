@@ -26,7 +26,11 @@ public enum MoveDirection {
         }
     }
 
-    public static MoveDirection fromCode(String code) {
+    public static MoveDirection fromCode(String code) throws IllegalArgumentException {
+        if (!allowed(code)) {
+            throw new IllegalArgumentException(code + " not valid code for move");
+        }
+
         return VALUE_MAP.get(code);
     }
 

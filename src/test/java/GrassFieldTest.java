@@ -32,8 +32,8 @@ public class GrassFieldTest {
         assertTrue(map.canMoveTo(new Vector2d(-10, -4))); // grass
         assertFalse(map.canMoveTo(new Vector2d(-1, -1))); // animal
         assertTrue(map.canMoveTo(new Vector2d(-100, -100))); // outside
-        assertFalse(map.place(new Animal(map, new Vector2d(-1, -1)))); // place on animal
-        assertFalse(map.place(new Grass(map, new Vector2d(0,0)))); // place on grass
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(-1, -1)))); // place on animal
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Grass(map, new Vector2d(0,0)))); // place on grass
 
         assertEquals(map.objectAt(new Vector2d(-10, -4)), map.objectAt(new Vector2d(-10, -4)));
         assertEquals(map.objectAt(new Vector2d(0, 1)), map.objectAt(new Vector2d(0, 1)));
@@ -45,7 +45,7 @@ public class GrassFieldTest {
     @Test
     public void walkingTest() {
         List<MoveDirection> moves = OptionsParser.parse("f b r l f f r r f f f f f f f f".split(" "));
-        IWorldMap map = new GrassField(0);
+        AbstractWorldMap map = new GrassField(0);
         map.place(new Grass(map, new Vector2d(2, 1)));
         List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
         SimulationEngine engine = new SimulationEngine(map, positions, moves);
@@ -53,6 +53,8 @@ public class GrassFieldTest {
 
         assertEquals(new Vector2d(2, -1), engine.getAnimalAt(0).getPosition());
         assertEquals(new Vector2d(3, 7), engine.getAnimalAt(1).getPosition());
+        assertEquals(new Vector2d(0, -1), map.getLowerLeft()); // TODO including (0,0) is forced behavior, remove this behavior
+        assertEquals(new Vector2d(3, 7), map.getUpperRight());
     }
 
     @Test

@@ -10,7 +10,6 @@ public class OptionsParser {
 
     public static List<MoveDirection> parse(String[] args) {
         return Arrays.stream(args)
-                .filter(MoveDirection::allowed)
                 .map(MoveDirection::fromCode)
                 .collect(Collectors.toList());
     }
