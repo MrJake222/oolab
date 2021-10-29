@@ -9,29 +9,17 @@ import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
-    protected int width;
-    protected int height;
-    protected Vector2d lowerLeft;
-    protected Vector2d upperRight;
     private final Map<Vector2d, IMapElement> mapElements;
     private final MapVisualizer visualizer;
 
-    public AbstractWorldMap(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.lowerLeft = new Vector2d(0, 0);
-        this.upperRight = new Vector2d(this.width-1, this.height-1);
+    public AbstractWorldMap() {
         this.mapElements = new LinkedHashMap<>();
         this.visualizer = new MapVisualizer(this);
     }
 
-    public Vector2d getLowerLeft() {
-        return lowerLeft;
-    }
+    public abstract Vector2d getLowerLeft();
 
-    public Vector2d getUpperRight() {
-        return upperRight;
-    }
+    public abstract Vector2d getUpperRight();
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -77,6 +65,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public String toString() {
-        return visualizer.draw(lowerLeft, upperRight);
+        return visualizer.draw(getLowerLeft(), getUpperRight());
     }
 }

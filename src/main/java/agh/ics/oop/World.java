@@ -15,7 +15,7 @@ public class World {
 
     static void run(String[] movesStr) {
         List<MoveDirection> moves = OptionsParser.parse(movesStr);
-        IWorldMap map = new GrassField(10);
+        IWorldMap map = new GrassField(0);
         List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
         IEngine engine = new SimulationEngine(map, positions, moves);
         engine.run();

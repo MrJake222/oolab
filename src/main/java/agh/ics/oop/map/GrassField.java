@@ -6,8 +6,10 @@ import agh.ics.oop.map.element.IMapElement;
 
 public class GrassField extends AbstractWorldMap {
 
+    private MapBoundary boundary;
+
     public GrassField(int grassQuantity) {
-        super(0, 0);
+        this.boundary = new MapBoundary();
 
         final double range = Math.sqrt(grassQuantity * 10);
 
@@ -25,21 +27,25 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
+    public Vector2d getLowerLeft() {
+        return boundary.getLowerLeft();
+    }
+
+    @Override
+    public Vector2d getUpperRight() {
+        return boundary.getUpperRight();
+    }
+
+    @Override
     public boolean place(IMapElement element) {
         if (super.place(element)) {
-            upperRight = upperRight.upperRight(element.getPosition());
-            lowerLeft = lowerLeft.lowerLeft(element.getPosition());
+            if (element instanceof IObservable) {
+                ((IObservable) element).addObserver(boundary);
+            }
+            boundary.addElement(element);
             return true;
         }
 
         return false;
-    }
-
-    @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        upperRight = upperRight.upperRight(newPosition);
-        lowerLeft = lowerLeft.lowerLeft(newPosition);
-
-        super.positionChanged(oldPosition, newPosition);
     }
 }

@@ -46,15 +46,40 @@ public class GrassFieldTest {
     public void walkingTest() {
         List<MoveDirection> moves = OptionsParser.parse("f b r l f f r r f f f f f f f f".split(" "));
         AbstractWorldMap map = new GrassField(0);
+
         map.place(new Grass(map, new Vector2d(2, 1)));
         List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
         SimulationEngine engine = new SimulationEngine(map, positions, moves);
+
+        assertEquals(new Vector2d(2, 1), map.getLowerLeft());
+        assertEquals(new Vector2d(3, 4), map.getUpperRight());
+
         engine.run();
 
         assertEquals(new Vector2d(2, -1), engine.getAnimalAt(0).getPosition());
         assertEquals(new Vector2d(3, 7), engine.getAnimalAt(1).getPosition());
-        assertEquals(new Vector2d(0, -1), map.getLowerLeft()); // TODO including (0,0) is forced behavior, remove this behavior
+        assertEquals(new Vector2d(2, -1), map.getLowerLeft());
         assertEquals(new Vector2d(3, 7), map.getUpperRight());
+    }
+
+    @Test
+    public void walkingBackwardsTest() {
+        List<MoveDirection> moves = OptionsParser.parse("f b r l f f r r f f f f f f f f b b b b b b b b".split(" "));
+        AbstractWorldMap map = new GrassField(0);
+
+        map.place(new Grass(map, new Vector2d(2, 1)));
+        List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
+        SimulationEngine engine = new SimulationEngine(map, positions, moves);
+
+        assertEquals(new Vector2d(2, 1), map.getLowerLeft());
+        assertEquals(new Vector2d(3, 4), map.getUpperRight());
+
+        engine.run();
+
+        assertEquals(new Vector2d(2, 3), engine.getAnimalAt(0).getPosition());
+        assertEquals(new Vector2d(3, 3), engine.getAnimalAt(1).getPosition());
+        assertEquals(new Vector2d(2, 3), map.getLowerLeft());
+        assertEquals(new Vector2d(3, 3), map.getUpperRight());
     }
 
     @Test
