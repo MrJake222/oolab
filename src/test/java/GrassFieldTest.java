@@ -99,4 +99,21 @@ public class GrassFieldTest {
 
         assertEquals(10, cnt);
     }
+
+    @Test
+    public void boundaryTest() {
+        List<MoveDirection> moves = OptionsParser.parse("f r f l".split(" "));
+        AbstractWorldMap map = new GrassField(0);
+
+        List<Vector2d> positions = Arrays.asList(new Vector2d(-2,-2), new Vector2d(3,-2));
+        SimulationEngine engine = new SimulationEngine(map, positions, moves);
+
+        assertEquals(new Vector2d(-2, -2), map.getLowerLeft());
+        assertEquals(new Vector2d(3, -2), map.getUpperRight());
+
+        engine.run();
+
+        assertEquals(new Vector2d(-2, -2), map.getLowerLeft());
+        assertEquals(new Vector2d(3, 0), map.getUpperRight());
+    }
 }

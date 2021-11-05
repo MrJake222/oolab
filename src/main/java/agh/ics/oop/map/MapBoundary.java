@@ -3,7 +3,6 @@ package agh.ics.oop.map;
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.map.element.IMapElement;
 
-import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -12,9 +11,23 @@ public class MapBoundary implements IPositionChangeObserver {
     private final SortedSet<Vector2d> setX;
     private final SortedSet<Vector2d> setY;
 
+    private static int compareX(Vector2d v1, Vector2d v2) {
+        if (v1.x == v2.x)
+            return v1.y - v2.y;
+
+        return v1.x - v2.x;
+    }
+
+    private static int compareY(Vector2d v1, Vector2d v2) {
+        if (v1.y == v2.y)
+            return v1.x - v2.x;
+
+        return v1.y - v2.y;
+    }
+
     public MapBoundary() {
-        setX = new TreeSet<>(Comparator.comparingInt(e -> e.x));
-        setY = new TreeSet<>(Comparator.comparingInt(e -> e.y));
+        setX = new TreeSet<>(MapBoundary::compareX);
+        setY = new TreeSet<>(MapBoundary::compareY);
     }
 
     public void addElement(IMapElement element) {
