@@ -13,4 +13,10 @@ public class OptionsParser {
                 .map(MoveDirection::fromCode)
                 .collect(Collectors.toList());
     }
+
+    public static List<MoveDirection> parse(List<String> args) {
+        return args.stream()
+                .map(MoveDirection::fromCode)
+                .collect(Collectors.toList());
+    }
 }

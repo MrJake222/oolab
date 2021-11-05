@@ -33,6 +33,7 @@ public class MapBoundary implements IPositionChangeObserver {
     public void addElement(IMapElement element) {
         setX.add(element.getPosition());
         setY.add(element.getPosition());
+        System.out.println(setX);
     }
 
     @Override

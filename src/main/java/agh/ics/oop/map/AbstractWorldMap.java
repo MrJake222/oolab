@@ -4,6 +4,7 @@ import agh.ics.oop.Vector2d;
 import agh.ics.oop.map.element.IMapElement;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public boolean place(IMapElement element) {
-        if (isOccupied(element.getPosition())) {
+        if (isOccupied(element.getPosition()) && !objectAt(element.getPosition()).canWalkOver()) {
             throw new IllegalArgumentException("unable to place " + element + " on " + element.getPosition());
         }
 
@@ -54,6 +55,10 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     @Override
     public IMapElement objectAt(Vector2d position) {
         return mapElements.get(position);
+    }
+
+    public Collection<IMapElement> mapObjects() {
+        return mapElements.values();
     }
 
     @Override

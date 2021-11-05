@@ -69,6 +69,17 @@ public class Animal extends AbstractMapElement implements IObservable {
     }
 
     @Override
+    public String getTexturePath() {
+        System.out.println("texpath animal"+mapDirection.getCode()+".png");
+        return "animal"+mapDirection.getCode()+".png";
+    }
+
+    @Override
+    public String getName() {
+        return "Z "+position;
+    }
+
+    @Override
     public String toString() {
         // return "{Zwięrzę na "+this.position+" kierunek "+this.mapDirection+"}";
         return this.mapDirection.getSymbol();

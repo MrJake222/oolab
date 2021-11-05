@@ -4,6 +4,8 @@ import agh.ics.oop.Vector2d;
 import agh.ics.oop.map.element.Grass;
 import agh.ics.oop.map.element.IMapElement;
 
+import java.util.Random;
+
 public class GrassField extends AbstractWorldMap {
 
     private MapBoundary boundary;
@@ -12,11 +14,15 @@ public class GrassField extends AbstractWorldMap {
         this.boundary = new MapBoundary();
 
         final double range = Math.sqrt(grassQuantity * 10);
+        long seed = new Random().nextLong();
+        seed = -4476009104255617078L;
+        Random random = new Random(seed);
+        System.out.println("seed: " + seed);
 
         int cnt = 0;
         while (cnt < grassQuantity) {
-            int x = (int) (Math.random() * range);
-            int y = (int) (Math.random() * range);
+            int x = (int) (random.nextDouble() * range);
+            int y = (int) (random.nextDouble() * range);
             Vector2d position = new Vector2d(x, y);
             if (!isOccupied(position)) {
                 Grass grass = new Grass(this, new Vector2d(x, y));

@@ -3,17 +3,19 @@ package agh.ics.oop.map;
 import agh.ics.oop.Vector2d;
 
 public enum MapDirection {
-    NORTH("Północ", "^"),
-    SOUTH("Południe", "v"),
-    WEST("Zachód", "<"),
-    EAST("Wschód", ">");
+    NORTH("Północ", "^", "N"),
+    SOUTH("Południe", "v", "S"),
+    WEST("Zachód", "<", "W"),
+    EAST("Wschód", ">", "E");
 
     private final String description;
     private final String symbol;
+    private final String code;
 
-    MapDirection(String description, String symbol) {
+    MapDirection(String description, String symbol, String code) {
         this.description = description;
         this.symbol = symbol;
+        this.code = code;
     }
 
     @Override
@@ -23,6 +25,10 @@ public enum MapDirection {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public MapDirection next() {

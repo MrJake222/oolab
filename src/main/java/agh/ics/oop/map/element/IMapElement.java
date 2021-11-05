@@ -22,4 +22,16 @@ public interface IMapElement {
      * @return {@code true} for grass for ex.
      */
     boolean canWalkOver();
+
+    /**
+     * Gets texture path.
+     * @return Texture path.
+     */
+    String getTexturePath();
+
+    /**
+     * Gets name of this element.
+     * @return Name of the element.
+     */
+    String getName();
 }

@@ -4,6 +4,8 @@ import agh.ics.oop.Vector2d;
 import agh.ics.oop.map.element.Animal;
 import agh.ics.oop.map.element.IMapElement;
 
+import java.util.Collection;
+
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -49,4 +51,11 @@ public interface IWorldMap {
      * @return Object or null if the position is not occupied.
      */
     IMapElement objectAt(Vector2d position);
+
+    /**
+     * Get all objects currently on map.
+     *
+     * @return {@link Collection} of {@link IMapElement}s.
+     */
+    Collection<IMapElement> mapObjects();
 }

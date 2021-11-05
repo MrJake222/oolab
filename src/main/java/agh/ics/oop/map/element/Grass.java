@@ -18,4 +18,14 @@ public class Grass extends AbstractMapElement {
     public String toString() {
         return "*";
     }
+
+    @Override
+    public String getTexturePath() {
+        return "grass.png";
+    }
+
+    @Override
+    public String getName() {
+        return "Trawa";
+    }
 }
