@@ -4,51 +4,48 @@ import agh.ics.oop.OptionsParser;
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.engine.IAnimalUpdateObserver;
 import agh.ics.oop.engine.SimulationEngine;
-import agh.ics.oop.engine.ThreadedSimulationEngine;
-import agh.ics.oop.map.*;
-import agh.ics.oop.map.element.Animal;
-import agh.ics.oop.map.element.Grass;
-import agh.ics.oop.map.element.IMapElement;
+import agh.ics.oop.map.AbstractWorldMap;
+import agh.ics.oop.map.GrassField;
 import agh.ics.oop.map.element.MoveDirection;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-public class App extends Application implements IPositionChangeObserver, IAnimalUpdateObserver {
+public class App extends Application implements IAnimalUpdateObserver {
 
     private AbstractWorldMap map;
-    private ThreadedSimulationEngine engine;
+    private SimulationEngine engine;
     private GridPane grid;
 
     @Override
     public void init() throws Exception {
         List<String> args = getParameters().getRaw();
 
-        List<MoveDirection> moves = OptionsParser.parse(args);
+//        List<MoveDirection> moves = OptionsParser.parse("f b r l f f r r f f f f f f f f b b b b b b b b".split(" "));
         List<Vector2d> positions = Arrays.asList(new Vector2d(2,2), new Vector2d(3,4));
         this.map = new GrassField(10);
-        this.engine = new ThreadedSimulationEngine(map, positions, moves);
-        this.engine.addObserverForAnimals(this);
+        this.engine = new SimulationEngine(map, positions, null);
         this.engine.addObserver(this);
+        this.engine.setMoveDelay(300);
 
         grid = new GridPane();
-        grid.setPadding(new Insets(20));
-        renderGrid();
+        renderGrid(true);
     }
 
-    private void renderGrid() {
+    private void renderGrid(boolean first) {
+        grid.setGridLinesVisible(false);
+        grid.setGridLinesVisible(true);
+
         Vector2d l = map.getLowerLeft();
         Vector2d r = map.getUpperRight();
         System.out.println(l);
@@ -88,41 +85,50 @@ public class App extends Application implements IPositionChangeObserver, IAnimal
             colIndex++;
         }
 
-        grid.getRowConstraints().add(new RowConstraints(30));
-        grid.getColumnConstraints().add(new ColumnConstraints(30));
-        for (int y=l.y; y<=r.y; y++) {
-            grid.getRowConstraints().add(new RowConstraints(50));
-        }
-        for (int x=l.x; x<=r.x; x++) {
-            grid.getColumnConstraints().add(new ColumnConstraints(50));
+        if (first) {
+            grid.getRowConstraints().add(new RowConstraints(30));
+            grid.getColumnConstraints().add(new ColumnConstraints(30));
+            for (int y = l.y; y <= r.y; y++) {
+                grid.getRowConstraints().add(new RowConstraints(50));
+            }
+            for (int x = l.x; x <= r.x; x++) {
+                grid.getColumnConstraints().add(new ColumnConstraints(50));
+            }
         }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        engine.start();
+        TextField ruchyTf = new TextField();
+        Button startBtn = new Button("Start");
+        startBtn.setOnAction(val -> {
+            List<MoveDirection> moves = OptionsParser.parse(ruchyTf.getText().split(" "));
+            engine.setDirections(moves);
 
-        Scene scene = new Scene(grid, 800, 800);
+            Thread engineThread = new Thread(engine);
+            engineThread.start();
+        });
+
+        VBox controlBox = new VBox(ruchyTf, startBtn);
+        controlBox.setPadding(new Insets(20));
+        HBox mainBox = new HBox(grid, controlBox);
+        mainBox.setPadding(new Insets(20));
+
+        Scene scene = new Scene(mainBox, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     @Override
     public void stop() throws Exception {
-        engine.stop();
-    }
-
-    @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-
+//        engine.stop();
     }
 
     @Override
     public void animalUpdate() {
-        System.out.println("pos changed");
         Platform.runLater(() -> {
             grid.getChildren().clear();
-            renderGrid();
+            renderGrid(false);
         });
     }
 }
